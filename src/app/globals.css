@@ -19,8 +19,7 @@
 
 html {
   scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) var(--color-surface);
+  scrollbar-width: none;
 }
 
 body {
@@ -36,16 +35,17 @@ body.site-loading-active {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 0;
+  height: 0;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-surface);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
-  border-radius: 3px;
+  background: transparent;
+  border-radius: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {

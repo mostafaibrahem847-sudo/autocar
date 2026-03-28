@@ -148,13 +148,8 @@ export default function HeroSection() {
     >
       <div
         ref={bgRef}
-        className="absolute inset-0 w-full h-[130%] -top-[15%] bg-[radial-gradient(circle_at_top,_rgba(212,175,55,0.08),_transparent_32%),linear-gradient(180deg,_#080808_0%,_#0b0b0b_48%,_#070707_100%)]"
+        className="absolute inset-0 w-full h-[130%] -top-[15%] bg-background"
       />
-
-      <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
-      <div className="soft-edge-top" />
-      <div className="soft-edge-bottom" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(212,175,55,0.14),transparent_20%),radial-gradient(circle_at_80%_28%,rgba(255,255,255,0.08),transparent_18%),radial-gradient(circle_at_50%_75%,rgba(212,175,55,0.08),transparent_24%)]" />
 
       <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 pt-28 pb-16">
         <div className="grid items-center gap-14 lg:gap-16 xl:gap-20 lg:grid-cols-[minmax(0,1.02fr)_minmax(360px,0.98fr)]">
@@ -260,7 +255,7 @@ export default function HeroSection() {
                         const image = encodeURI(car.images[0]);
 
                         return (
-                          <article
+                           <article
                             key={`${columnIndex}-${car.id}-${index}`}
                             className="hero-ticker-card"
                           >

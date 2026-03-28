@@ -1,86 +1,98 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import ScrollReveal from "@/components/animations/ScrollReveal";
+import { Carousel, TestimonialCard, type iTestimonial } from "@/components/ui/retro-testimonial";
 
-const testimonials = [
-  {
-    name: "Ahmed K.",
-    location: "Dubai, UAE",
-    car: "Lamborghini Huracan EVO",
-    quote:
-      "The experience was beyond anything I expected. Not just a purchase - a memory.",
+type TestimonialDetails = {
+  [key: string]: iTestimonial & { id: string };
+};
+
+const testimonialData = {
+  ids: [
+    "autocar-testimonial-01",
+    "autocar-testimonial-02",
+    "autocar-testimonial-03",
+    "autocar-testimonial-04",
+    "autocar-testimonial-05",
+    "autocar-testimonial-06",
+  ],
+  details: {
+    "autocar-testimonial-01": {
+      id: "autocar-testimonial-01",
+      description:
+        "From the first call to final delivery, everything felt private, precise, and deeply considered. Autocar understood the type of buying experience a performance client actually wants.",
+      profileImage:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=900&auto=format&fit=crop",
+      name: "Omar Al Harthi",
+      designation: "Dubai, UAE • Ferrari 296 GTB",
+    },
+    "autocar-testimonial-02": {
+      id: "autocar-testimonial-02",
+      description:
+        "I expected a premium inventory. What surprised me was the calm confidence of the team. They never pushed, never rushed, and still made the entire process feel exceptional.",
+      profileImage:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=900&auto=format&fit=crop",
+      name: "Layla Morgan",
+      designation: "London, UK • Rolls-Royce Ghost",
+    },
+    "autocar-testimonial-03": {
+      id: "autocar-testimonial-03",
+      description:
+        "I have purchased collector and modern performance cars across three countries. This was easily one of the most polished, discreet, and trustworthy experiences I have had.",
+      profileImage:
+        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=900&auto=format&fit=crop",
+      name: "Daniel Reeves",
+      designation: "Los Angeles, CA • Lamborghini Huracan EVO",
+    },
+    "autocar-testimonial-04": {
+      id: "autocar-testimonial-04",
+      description:
+        "The team translated my taste almost instantly. Every recommendation was on-brand for what I wanted, and the final handover felt more like concierge service than dealership paperwork.",
+      profileImage:
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=900&auto=format&fit=crop",
+      name: "Sofia Haddad",
+      designation: "Riyadh, KSA • Bentley Bentayga",
+    },
+    "autocar-testimonial-05": {
+      id: "autocar-testimonial-05",
+      description:
+        "What stood out most was transparency. Specs, condition, history, logistics, everything was communicated clearly. That level of detail made the decision feel easy.",
+      profileImage:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=900&auto=format&fit=crop",
+      name: "James Walker",
+      designation: "Doha, Qatar • Porsche 911 Turbo S",
+    },
+    "autocar-testimonial-06": {
+      id: "autocar-testimonial-06",
+      description:
+        "Autocar managed to make a very high-value purchase feel effortless. The showroom, the communication, and the follow-through all matched the standard of the car itself.",
+      profileImage:
+        "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=900&auto=format&fit=crop",
+      name: "Nadine Laurent",
+      designation: "Paris, France • Mercedes-Maybach S-Class",
+    },
   },
-  {
-    name: "Sarah M.",
-    location: "London, UK",
-    car: "Rolls-Royce Ghost",
-    quote:
-      "Autocar made the entire process seamless. They knew exactly what I needed before I did.",
-  },
-  {
-    name: "Carlos R.",
-    location: "Los Angeles, CA",
-    car: "Ferrari 488 Pista",
-    quote:
-      "I've bought from many dealers. None came close to this level of personal attention.",
-  },
-];
+};
+
+const backgroundImage =
+  "https://images.unsplash.com/photo-1528458965990-428de4b1cb0d?q=80&w=3129&auto=format&fit=crop";
 
 export default function TestimonialsSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const card = cardRef.current;
-
-    if (!card) {
-      return;
-    }
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        card,
-        { opacity: 0, x: 20 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.6,
-          ease: "power3.out",
-          clearProps: "transform",
-        }
-      );
-    }, card);
-
-    return () => ctx.revert();
-  }, [activeIndex]);
-
-  useEffect(() => {
-    const rotationTimer = window.setInterval(() => {
-      setActiveIndex((currentIndex) => (currentIndex + 1) % testimonials.length);
-    }, 5000);
-
-    return () => window.clearInterval(rotationTimer);
-  }, []);
-
-  const goToPrevious = () => {
-    setActiveIndex((currentIndex) =>
-      currentIndex === 0 ? testimonials.length - 1 : currentIndex - 1
-    );
-  };
-
-  const goToNext = () => {
-    setActiveIndex((currentIndex) => (currentIndex + 1) % testimonials.length);
-  };
-
-  const activeTestimonial = testimonials[activeIndex];
+  const details = testimonialData.details as TestimonialDetails;
+  const cards = testimonialData.ids.map((cardId, index) => (
+    <TestimonialCard
+      key={cardId}
+      testimonial={details[cardId]}
+      index={index}
+      backgroundImage={backgroundImage}
+    />
+  ));
 
   return (
-    <section className="w-full bg-background py-24 md:py-32">
+    <section className="relative z-10 w-full bg-transparent pb-14 pt-24 md:pb-18 md:pt-28">
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal className="mb-12 text-center md:mb-16">
-          <p className="mb-3 text-sm font-medium tracking-widest text-primary uppercase">
+          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-primary">
             Client Stories
           </p>
           <h2
@@ -89,71 +101,13 @@ export default function TestimonialsSection() {
           >
             What Our Clients Say
           </h2>
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-foreground/60 md:text-base">
+            A more editorial, collectible-style testimonial wall for clients who bought into the
+            experience as much as the machine itself.
+          </p>
         </ScrollReveal>
 
-        <div
-          ref={cardRef}
-          className="mx-auto max-w-4xl rounded-3xl border border-primary/20 bg-surface-light p-8 shadow-[0_24px_80px_rgba(0,0,0,0.26)] md:p-12"
-        >
-          <span className="mb-3 block text-8xl leading-none text-primary opacity-20 md:mb-1">
-            &ldquo;
-          </span>
-
-          <blockquote className="text-xl italic leading-relaxed text-foreground/80 md:text-2xl">
-            {activeTestimonial.quote}
-          </blockquote>
-
-          <div className="mt-10 border-t border-white/6 pt-6">
-            <p className="text-lg font-bold text-foreground">{activeTestimonial.name}</p>
-            <p className="mt-1 text-sm font-medium text-primary">{activeTestimonial.car}</p>
-            <p className="mt-2 text-xs uppercase tracking-[0.18em] text-muted">
-              {activeTestimonial.location}
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-10 flex items-center justify-center gap-4">
-          <button
-            type="button"
-            onClick={goToPrevious}
-            className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-surface-light text-foreground transition-all duration-300 hover:border-primary/40 hover:text-primary"
-            aria-label="Previous testimonial"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 6.75L8.75 12l5.5 5.25" />
-            </svg>
-          </button>
-
-          <div className="flex items-center gap-3">
-            {testimonials.map((testimonial, index) => {
-              const isActive = index === activeIndex;
-
-              return (
-                <button
-                  key={testimonial.name}
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  className={`h-3 rounded-full transition-all duration-300 ${
-                    isActive ? "w-10 bg-primary" : "w-3 bg-white/20 hover:bg-white/35"
-                  }`}
-                  aria-label={`Show testimonial from ${testimonial.name}`}
-                  aria-pressed={isActive}
-                />
-              );
-            })}
-          </div>
-
-          <button
-            type="button"
-            onClick={goToNext}
-            className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-surface-light text-foreground transition-all duration-300 hover:border-primary/40 hover:text-primary"
-            aria-label="Next testimonial"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 6.75L15.25 12l-5.5 5.25" />
-            </svg>
-          </button>
-        </div>
+        <Carousel items={cards} />
       </div>
     </section>
   );

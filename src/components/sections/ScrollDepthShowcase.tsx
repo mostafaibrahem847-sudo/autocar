@@ -61,16 +61,6 @@ const PHASE_WINDOWS: PhaseWindow[] = [
   { start: 0.95, peak: 0.995, holdEnd: 1, exitEnd: 1.01 },
 ];
 
-const DIAGONALS = [
-  { x1: 820, y1: 0, x2: 1110, y2: 900, strokeWidth: 1 },
-  { x1: 760, y1: 0, x2: 970, y2: 900, strokeWidth: 0.7 },
-  { x1: 910, y1: 0, x2: 1210, y2: 900, strokeWidth: 0.6 },
-  { x1: 320, y1: 0, x2: 560, y2: 900, strokeWidth: 1 },
-  { x1: 250, y1: 0, x2: 500, y2: 900, strokeWidth: 0.7 },
-  { x1: 1120, y1: 0, x2: 830, y2: 900, strokeWidth: 1 },
-  { x1: 1210, y1: 0, x2: 920, y2: 900, strokeWidth: 0.7 },
-];
-
 const INVENTORY = getAllCars().slice(0, CARDS_PER_PHASE * 3);
 
 function clamp(value: number, min: number, max: number) {
@@ -280,21 +270,6 @@ export default function ScrollDepthShowcase() {
         style={{ height: `${sectionHeight}vh` }}
       >
         <div className={styles.sticky}>
-          <div className={styles.sceneGlow} />
-          <svg className={styles.diag} viewBox="0 0 1440 900" preserveAspectRatio="none">
-            {DIAGONALS.map((line, index) => (
-              <line
-                key={`diag-${index}`}
-                x1={line.x1}
-                y1={line.y1}
-                x2={line.x2}
-                y2={line.y2}
-                stroke="rgba(212, 175, 55, 0.09)"
-                strokeWidth={line.strokeWidth}
-              />
-            ))}
-          </svg>
-
           {SHOWCASE_CARS.map((car) => {
             const cardStyle = {
               "--left": `${car.slot.left}%`,
@@ -369,7 +344,6 @@ export default function ScrollDepthShowcase() {
               </Button>
             </div>
           </div>
-          <div className={styles.vignette} />
         </div>
       </article>
     </section>

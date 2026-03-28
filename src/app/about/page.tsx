@@ -12,11 +12,6 @@ export default function AboutPage() {
     <div className="w-full min-h-screen bg-background">
       {/* Hero */}
       <section className="relative w-full h-[60vh] flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(/images/about-hero.webp)` }}
-        />
-        <div className="absolute inset-0 bg-background/70" />
         <div className="relative z-10 text-center max-w-3xl mx-auto px-6">
           <p className="text-primary text-sm font-medium tracking-widest uppercase mb-3">
             Our Story

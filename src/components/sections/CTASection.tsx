@@ -3,8 +3,8 @@ import Button from "@/components/ui/Button";
 
 export default function CTASection() {
   return (
-    <section className="w-full py-24 md:py-32 bg-background">
-      <div className="mx-auto max-w-4xl px-6 text-center">
+    <section className="relative z-10 w-full overflow-hidden bg-transparent pb-24 pt-14 md:pb-32 md:pt-18">
+      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <ScrollReveal>
           <p className="text-primary text-sm font-medium tracking-widest uppercase mb-4">
             Ready to Drive?

@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SiteLoader from "@/components/layout/SiteLoader";
 import PageTransitionProvider from "@/components/layout/PageTransitionProvider";
+import ScrollSpeedometer from "@/components/layout/ScrollSpeedometer";
 
 export const metadata: Metadata = {
   title: "Autocar - Premium Automotive Dealership",
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body className="antialiased">
         <PageTransitionProvider>
           <SiteLoader />
+          <ScrollSpeedometer />
           <Header />
           <main>{children}</main>
           <Footer />

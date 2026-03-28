@@ -1,26 +1,11 @@
 .section {
   position: relative;
   overflow: clip;
-  background:
-    radial-gradient(circle at top, rgba(212, 175, 55, 0.12), transparent 26%),
-    linear-gradient(180deg, #070707 0%, #0a0a0a 18%, #0c0c0c 50%, #090909 100%);
-}
-
-.section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-  background-size: 140px 140px;
-  mask-image: linear-gradient(180deg, transparent, black 10%, black 90%, transparent);
-  opacity: 0.42;
 }
 
 .sceneWrap {
   position: relative;
+  z-index: 1;
 }
 
 .sticky {
@@ -29,40 +14,6 @@
   height: 100vh;
   overflow: hidden;
   isolation: isolate;
-}
-
-.sceneGlow {
-  position: absolute;
-  inset: auto 50% 12%;
-  width: 62vw;
-  height: 62vw;
-  max-width: 48rem;
-  max-height: 48rem;
-  border-radius: 999px;
-  transform: translateX(-50%);
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.1), transparent 68%);
-  filter: blur(24px);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.diag {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.vignette {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at center, transparent 0%, transparent 38%, rgba(7, 7, 7, 0.24) 70%, rgba(7, 7, 7, 0.72) 100%),
-    linear-gradient(180deg, rgba(7, 7, 7, 0.64), transparent 28%, transparent 70%, rgba(7, 7, 7, 0.72));
-  pointer-events: none;
-  z-index: 2;
 }
 
 .center {
@@ -236,10 +187,6 @@
 }
 
 @media (max-width: 768px) {
-  .section::before {
-    background-size: 92px 92px;
-  }
-
   .center {
     width: min(30rem, calc(100% - 1.5rem));
   }

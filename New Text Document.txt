@@ -1,0 +1,43 @@
+ملخص شغل النهاردة على موقع autocar
+
+الأقسام
+- شيلنا سيكشني Why Autocar / The Autocar Advantage و Stats من الهوم.
+- أضفنا مكانهم سيكشن ScrollRevealVideo بفيديو يتكشف مع السكروول.
+- بعد One Scroll Through The Full Collection أضفنا سيكشن جديد ScrollVideoPlayer خاص بـ Porsche.
+
+سيكشن الفيديو المتكشف
+- اتعمل مكوّن reusable باسم src/components/sections/ScrollRevealVideo.tsx.
+- الفيديو فيه muted + loop + autoplay + playsInline ومن غير صوت.
+- أضفنا فوقه stats overlay بتتحرك وتختفي مع السكروول.
+- عدّلنا شكل النصوص والألوان والوزن أكتر من مرة لحد ما وصلنا للشكل المناسب.
+
+الهيرو
+- أضفنا aurora light streaks في الخلفية.
+- أضفنا glow ذهبي وتنقلنا بين أكثر من تجربة بصرية.
+- جرّبنا film grain/noise وبعدها شلناه.
+- في النهاية رجعنا الهيرو لشكل أنظف مع الإبقاء على الإضافات المطلوبة فقط.
+
+سيكشن Porsche scroll
+- بدأناه كـ scroll-controlled MP4.
+- واجهنا lag بسبب scrubbing على ملف الفيديو.
+- ثبتّ ffmpeg.
+- استخرجت الفيديو إلى 192 frame داخل public/video/porsche-sequence.
+- حوّلنا السيكشن إلى image sequence بدل فيديو مباشر.
+- بعد كده نقلناه إلى canvas-based rendering لثبات وسلاسة أفضل.
+- عدّلنا طريقة العرض أكثر من مرة لحد ما اختفت مشاكل الجوانب وبقى المعروض هو الفيديو + المعلومات فقط.
+
+One Scroll Through The Full Collection
+- جرّبنا استبدال الخلفية بصورة Background 1.webp.
+- عدّلناها أكثر من مرة بين ثابتة ومتحركة.
+- في النهاية الخلفية الحالية أصبحت صورة فقط بدون gradient، ومع شيل الزوم علشان ما تتبكسلش.
+
+الملفات الأساسية اللي اتعدلت
+- src/app/page.tsx
+- src/components/sections/ScrollRevealVideo.tsx
+- src/components/ScrollVideoPlayer.tsx
+- src/components/sections/HeroSection.tsx
+- src/app/globals.css
+- src/components/sections/ScrollDepthShowcase.module.css
+
+التحقق
+- شغّلت npm run build أكثر من مرة أثناء الشغل، وكان بينجح بعد التعديلات الأخيرة.
