@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getFeaturedCars } from "@/data/cars";
 import TransitionLink from "@/components/ui/TransitionLink";
-
+import NextImage from "next/image";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
@@ -111,12 +111,16 @@ export default function FeaturedCars() {
           style={{ height: isActive ? "37.5rem" : "35rem" }}
         >
           <div className="absolute inset-0">
-            <div
-              className={`h-full w-full bg-cover bg-center transition-transform duration-700 ${
-                isActive ? "scale-105" : "scale-100 group-hover:scale-105"
-              }`}
-              style={{ backgroundImage: `url("${imageUrl}")` }}
-            />
+            <NextImage
+  src={car.images[0]}
+  alt={`${car.brand} ${car.model}`}
+  fill
+  className={`object-cover transition-transform duration-700 ${
+    isActive ? "scale-105" : "scale-100 group-hover:scale-105"
+  }`}
+  sizes="(max-width: 768px) 78vw, 24rem"
+  loading="lazy"
+/>
             <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/5 to-background/95" />
             <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-background via-background/90 to-transparent" />
           </div>
