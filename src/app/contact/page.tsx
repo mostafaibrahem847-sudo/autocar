@@ -5,7 +5,7 @@ import ScrollReveal from "@/components/animations/ScrollReveal";
 import Button from "@/components/ui/Button";
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
 
@@ -15,7 +15,7 @@ export default function ContactPage() {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setSending(false);
     setSubmitted(true);
-    setFormData({ name: "", email: "", message: "" });
+    setFormData({ name: "", email: "", phone: "", message: "" });
   };
 
   return (
@@ -25,18 +25,15 @@ export default function ContactPage() {
           <p className="text-primary text-sm font-medium tracking-widest uppercase mb-3">
             Get in Touch
           </p>
-          <h1 className="text-4xl md:text-6xl font-black mb-4"
-              style={{ fontFamily: "var(--font-heading)" }}>
+          <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "var(--font-heading)" }}>
             Contact Us
           </h1>
           <p className="text-foreground/50 text-lg max-w-xl mx-auto">
-            Have questions about a vehicle or want to schedule a visit? We&apos;d love to
-            hear from you.
+            Have questions about a vehicle or want to schedule a visit? We&apos;d love to hear from you.
           </p>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Form */}
           <ScrollReveal>
             {submitted ? (
               <div className="rounded-2xl bg-surface-light border border-primary/30 p-12 text-center">
@@ -45,8 +42,7 @@ export default function ContactPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2"
-                    style={{ fontFamily: "var(--font-heading)" }}>
+                <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "var(--font-heading)" }}>
                   Message Sent!
                 </h3>
                 <p className="text-muted text-sm mb-6">
@@ -59,9 +55,7 @@ export default function ContactPage() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-                    Name
-                  </label>
+                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">Name</label>
                   <input
                     id="name"
                     type="text"
@@ -73,9 +67,7 @@ export default function ContactPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                    Email
-                  </label>
+                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">Email</label>
                   <input
                     id="email"
                     type="email"
@@ -87,9 +79,18 @@ export default function ContactPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
-                    Message
-                  </label>
+                  <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">Phone</label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full px-5 py-3.5 rounded-xl bg-surface-light border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
+                    placeholder="+1 (555) 000-0000"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">Message</label>
                   <textarea
                     id="message"
                     required
@@ -107,12 +108,10 @@ export default function ContactPage() {
             )}
           </ScrollReveal>
 
-          {/* Contact Info */}
           <ScrollReveal direction="right">
             <div className="space-y-8">
               <div className="rounded-2xl bg-surface-light border border-border p-8">
-                <h3 className="text-lg font-bold mb-6"
-                    style={{ fontFamily: "var(--font-heading)" }}>
+                <h3 className="text-lg font-bold mb-6" style={{ fontFamily: "var(--font-heading)" }}>
                   Visit Us
                 </h3>
                 <div className="space-y-5">
@@ -123,16 +122,11 @@ export default function ContactPage() {
                     { label: "Hours", value: "Mon - Sat: 9:00 AM - 7:00 PM\nSun: 10:00 AM - 5:00 PM" },
                   ].map((item) => (
                     <div key={item.label}>
-                      <p className="text-xs text-primary tracking-widest uppercase mb-1">
-                        {item.label}
-                      </p>
-                      <p className="text-sm text-foreground/70 whitespace-pre-line">
-                        {item.value}
-                      </p>
+                      <p className="text-xs text-primary tracking-widest uppercase mb-1">{item.label}</p>
+                      <p className="text-sm text-foreground/70 whitespace-pre-line">{item.value}</p>
                     </div>
                   ))}
                 </div>
-
                 <div className="mt-8 border-t border-border pt-8">
                   <a
                     href="https://wa.me/15552345678"
@@ -153,13 +147,9 @@ export default function ContactPage() {
 
         <ScrollReveal className="mt-16">
           <section>
-            <h2
-              className="mb-6 text-2xl font-bold"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
+            <h2 className="mb-6 text-2xl font-bold" style={{ fontFamily: "var(--font-heading)" }}>
               Find Us
             </h2>
-
             <div className="relative h-80 w-full overflow-hidden rounded-2xl border border-border bg-surface-light">
               <iframe
                 src="https://maps.google.com/maps?q=Los+Angeles&output=embed"
@@ -169,30 +159,14 @@ export default function ContactPage() {
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Autocar location map"
               />
-
-              <div
-                className="absolute inset-0 opacity-60"
-                style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 32px), repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 32px)",
-                }}
-              />
-
+              <div className="absolute inset-0 opacity-60" style={{ backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 32px), repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 32px)" }} />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(10,10,10,0.18),rgba(10,10,10,0.82))]" />
-
               <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="mb-4 h-14 w-14 text-primary">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 21s6-5.33 6-11a6 6 0 10-12 0c0 5.67 6 11 6 11z"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s6-5.33 6-11a6 6 0 10-12 0c0 5.67 6 11 6 11z" />
                   <circle cx="12" cy="10" r="2.5" />
                 </svg>
-                <h3
-                  className="mb-5 text-xl font-bold text-foreground"
-                  style={{ fontFamily: "var(--font-heading)" }}
-                >
+                <h3 className="mb-5 text-xl font-bold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
                   123 Autocar Boulevard
                 </h3>
                 <a
