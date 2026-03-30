@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TransitionLink from "@/components/ui/TransitionLink";
 
 const navLinks = [
@@ -14,6 +14,13 @@ const navLinks = [
 export default function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+
+useEffect(() => {
+  document.body.style.overflow = menuOpen ? "hidden" : "";
+  return () => {
+    document.body.style.overflow = "";
+  };
+}, [menuOpen]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 py-5">
