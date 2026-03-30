@@ -1,20 +1,23 @@
 import { Car } from "@/data/cars";
 import TransitionLink from "@/components/ui/TransitionLink";
+import NextImage from "next/image";
 
 interface CarCardProps {
   car: Car;
 }
 
 export default function CarCard({ car }: CarCardProps) {
-  const imageUrl = encodeURI(car.images[0]);
-
   return (
     <TransitionLink href={`/cars/${car.slug}`} className="group block">
       <div className="relative bg-surface-light rounded-2xl overflow-hidden border border-border transition-all duration-500 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5">
         <div className="relative h-56 overflow-hidden">
-          <div
-            className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-            style={{ backgroundImage: `url("${imageUrl}")` }}
+          <NextImage
+            src={car.images[0]}
+            alt={`${car.brand} ${car.model}`}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            sizes="(max-width: 768px) 100vw, 400px"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-surface-light via-transparent to-transparent" />
           {car.featured && (
