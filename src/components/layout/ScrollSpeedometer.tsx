@@ -80,7 +80,7 @@ export default function ScrollSpeedometer() {
   const baseArc = describeArc(70, 70, 44, dialStart, dialEnd);
 
   return (
-    <div className="pointer-events-none fixed right-3 top-1/2 z-[70] -translate-y-1/2 sm:right-4 lg:right-5">
+    <div className="pointer-events-none fixed right-3 top-1/2 z-[70] -translate-y-1/2 sm:right-4 lg:right-5 hidden md:flex">
       <div className="flex h-[148px] w-[148px] items-center justify-center rounded-full border border-primary/16 bg-[rgba(10,10,10,0.72)] shadow-[0_16px_48px_rgba(0,0,0,0.34)] backdrop-blur-xl">
         <svg viewBox="0 0 140 140" className="h-[132px] w-[132px] overflow-visible">
           <defs>
