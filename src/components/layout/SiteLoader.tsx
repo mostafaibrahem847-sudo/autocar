@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-const MINIMUM_LOADER_TIME = 3400;
-const EXIT_DURATION = 700;
+const MINIMUM_LOADER_TIME = 800;
+const EXIT_DURATION = 300;
 const HOLD_PROGRESS = 92;
 
 export default function SiteLoader() {
