@@ -190,9 +190,16 @@ export default function ScrollVideoPlayer({
       };
     };
 
-    for (let frameIndex = 0; frameIndex < frameCount; frameIndex += 1) {
-      loadFrame(frameIndex);
-    }
+    loadFrame(0);
+
+let frameIndex = 1;
+const loadNext = () => {
+  if (isCancelled || frameIndex >= frameCount) return;
+  loadFrame(frameIndex);
+  frameIndex += 1;
+  setTimeout(loadNext, 16);
+};
+setTimeout(loadNext, 500);
 
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
