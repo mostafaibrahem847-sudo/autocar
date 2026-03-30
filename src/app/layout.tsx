@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SiteLoader from "@/components/layout/SiteLoader";
 import PageTransitionProvider from "@/components/layout/PageTransitionProvider";
 import ScrollSpeedometer from "@/components/layout/ScrollSpeedometer";
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-heading",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Autocar - Premium Automotive Dealership",
@@ -19,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className={`${inter.variable} ${outfit.variable} antialiased`}>
         <PageTransitionProvider>
           <SiteLoader />
           <ScrollSpeedometer />
