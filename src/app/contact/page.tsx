@@ -2,20 +2,43 @@
 
 import { useState } from "react";
 import ScrollReveal from "@/components/animations/ScrollReveal";
-import Button from "@/components/ui/Button";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFeedback(null);
     setSending(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setSending(false);
-    setSubmitted(true);
-    setFormData({ name: "", email: "", phone: "", message: "" });
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+
+      setFormData({ name: "", email: "", phone: "", message: "" });
+      setFeedback({
+        type: "success",
+        text: "Your message has been sent successfully. We'll contact you soon.",
+      });
+    } catch {
+      setFeedback({
+        type: "error",
+        text: "Something went wrong. Please try again.",
+      });
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -35,77 +58,86 @@ export default function ContactPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <ScrollReveal>
-            {submitted ? (
-              <div className="rounded-2xl bg-surface-light border border-primary/30 p-12 text-center">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-5">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-8 h-8 text-primary">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "var(--font-heading)" }}>
-                  Message Sent!
-                </h3>
-                <p className="text-muted text-sm mb-6">
-                  Thank you for reaching out. We&apos;ll get back to you within 24 hours.
-                </p>
-                <Button onClick={() => setSubmitted(false)} variant="outline" size="sm">
-                  Send Another
-                </Button>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">Name</label>
+                <input
+                  id="name"
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-5 py-3.5 rounded-xl bg-surface-light border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
+                  placeholder="Your name"
+                />
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">Name</label>
-                  <input
-                    id="name"
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-5 py-3.5 rounded-xl bg-surface-light border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
-                    placeholder="Your name"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">Email</label>
-                  <input
-                    id="email"
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-5 py-3.5 rounded-xl bg-surface-light border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
-                    placeholder="your@email.com"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">Phone</label>
-                  <input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-5 py-3.5 rounded-xl bg-surface-light border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
-                    placeholder="+1 (555) 000-0000"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">Message</label>
-                  <textarea
-                    id="message"
-                    required
-                    rows={5}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-5 py-3.5 rounded-xl bg-surface-light border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all resize-none"
-                    placeholder="Tell us about the vehicle you're interested in..."
-                  />
-                </div>
-                <Button type="submit" className="w-full">
-                  {sending ? "Sending..." : "Send Message"}
-                </Button>
-              </form>
-            )}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-5 py-3.5 rounded-xl bg-surface-light border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
+                  placeholder="your@email.com"
+                />
+              </div>
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">Phone</label>
+                <input
+                  id="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="w-full px-5 py-3.5 rounded-xl bg-surface-light border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
+                  placeholder="+1 (555) 000-0000"
+                />
+              </div>
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">Message</label>
+                <textarea
+                  id="message"
+                  required
+                  rows={5}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full px-5 py-3.5 rounded-xl bg-surface-light border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all resize-none"
+                  placeholder="Tell us about the vehicle you're interested in..."
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={sending}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-medium tracking-wide text-background transition-all duration-300 hover:bg-primary-light hover:shadow-lg hover:shadow-primary/20 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {sending && (
+                  <svg viewBox="0 0 24 24" className="h-4 w-4 animate-spin" aria-hidden="true">
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="9"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      fill="none"
+                      className="opacity-30"
+                    />
+                    <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                )}
+                <span>{sending ? "Sending..." : "Send Message"}</span>
+              </button>
+              {feedback && (
+                <p
+                  className={`text-sm ${
+                    feedback.type === "success" ? "text-primary" : "text-red-400"
+                  }`}
+                  style={{ animation: "contact-status-fade 220ms ease-out" }}
+                >
+                  {feedback.text}
+                </p>
+              )}
+            </form>
           </ScrollReveal>
 
           <ScrollReveal direction="right">
@@ -182,6 +214,18 @@ export default function ContactPage() {
           </section>
         </ScrollReveal>
       </div>
+      <style jsx>{`
+        @keyframes contact-status-fade {
+          from {
+            opacity: 0;
+            transform: translateY(6px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }
