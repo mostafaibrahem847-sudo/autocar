@@ -270,7 +270,7 @@ export default function ScrollDepthShowcase() {
         style={{ height: `${sectionHeight}vh` }}
       >
         <div className={styles.sticky}>
-          {SHOWCASE_CARS.map((car) => {
+          {SHOWCASE_CARS.map((car, index) => {
             const cardStyle = {
               "--left": `${car.slot.left}%`,
               "--top": `${car.slot.top}%`,
@@ -291,11 +291,14 @@ export default function ScrollDepthShowcase() {
                 className={styles.floatCard}
                 style={cardStyle}
               >
+                {/* PERFORMANCE FIX: These floating cards render as compact visual
+                    tiles, so constrain responsive image selection to small sizes. */}
                 <Image
                   src={car.image}
                   alt={`${car.brand} ${car.model}`}
                   fill
-                  sizes="(max-width: 768px) 34vw, (max-width: 1100px) 22vw, 220px"
+                  sizes="(max-width: 768px) 50vw, 200px"
+                  priority={index < 2}
                   className={styles.floatImage}
                 />
                 <div className={styles.floatOverlay} />

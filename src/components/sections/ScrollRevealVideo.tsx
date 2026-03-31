@@ -40,7 +40,10 @@ export default function ScrollRevealVideo({
   stats = DEFAULT_STATS,
 }: ScrollRevealVideoProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   // Match the collapsed mask to the screen size so the reveal feels balanced
   // on both narrow phones and wide desktop layouts.
@@ -53,6 +56,44 @@ export default function ScrollRevealVideo({
 
     return () => mediaQuery.removeEventListener("change", updateBreakpoint);
   }, []);
+
+  // PERFORMANCE FIX: Defer the below-the-fold video source until the section
+  // actually enters the viewport instead of preloading it on page load.
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section || typeof IntersectionObserver === "undefined") {
+      setShouldLoadVideo(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) {
+          return;
+        }
+
+        setShouldLoadVideo(true);
+        observer.disconnect();
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // PERFORMANCE FIX: Switch preload only when the section is near/inside view,
+  // then explicitly call load so the browser starts fetching on demand.
+  useEffect(() => {
+    if (!shouldLoadVideo || !videoRef.current) {
+      return;
+    }
+
+    setIsVideoReady(false);
+    videoRef.current.load();
+  }, [shouldLoadVideo, videoSrc]);
 
   // Bind the animation directly to the section's scroll progress.
   const { scrollYProgress } = useScroll({
@@ -94,14 +135,25 @@ export default function ScrollRevealVideo({
             willChange: "clip-path, border-radius",
           }}
         >
+          {/* PERFORMANCE FIX: Keep a lightweight placeholder visible while the
+              deferred video has not started or finished loading yet. */}
+          {!isVideoReady ? (
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.14),transparent_40%),linear-gradient(180deg,#080808_0%,#050505_100%)]" />
+          ) : null}
+
+          {/* PERFORMANCE FIX: Do not preload the media-heavy video until the
+              section is intersecting, while preserving autoplay behavior. */}
           <video
+            ref={videoRef}
             autoPlay
             loop
             muted
             playsInline
+            preload={shouldLoadVideo ? "auto" : "none"}
             className="h-full w-full object-cover"
+            onLoadedData={() => setIsVideoReady(true)}
           >
-            <source src={videoSrc} type="video/mp4" />
+            {shouldLoadVideo ? <source src={videoSrc} type="video/mp4" /> : null}
           </video>
 
           <motion.div

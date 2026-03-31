@@ -123,6 +123,7 @@ export default function ScrollVideoPlayer({
   const sectionTopRef = useRef(0);
   const currentFrameRef = useRef(0);
   const loadedImagesRef = useRef<(HTMLImageElement | null)[]>([]);
+  const [shouldLoadSequence, setShouldLoadSequence] = useState(false);
   const [sequenceReady, setSequenceReady] = useState(false);
   const [overlayVisibility, setOverlayVisibility] = useState({
     engine: false,
@@ -136,7 +137,41 @@ export default function ScrollVideoPlayer({
   const getFrameSrc = (frameIndex: number) =>
     `${sequenceBasePath}/frame-${padFrame(frameIndex + 1)}.${fileExtension}`;
 
+  // PERFORMANCE FIX: Do not begin fetching the heavy image-sequence frames
+  // until the section is within 200px of the viewport.
   useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section || typeof IntersectionObserver === "undefined") {
+      setShouldLoadSequence(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) {
+          return;
+        }
+
+        setShouldLoadSequence(true);
+        observer.disconnect();
+      },
+      {
+        rootMargin: "200px 0px",
+        threshold: 0.01,
+      }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!shouldLoadSequence) {
+      return;
+    }
+
     const canvas = canvasRef.current;
 
     if (!canvas) {
@@ -192,14 +227,18 @@ export default function ScrollVideoPlayer({
 
     loadFrame(0);
 
-let frameIndex = 1;
-const loadNext = () => {
-  if (isCancelled || frameIndex >= frameCount) return;
-  loadFrame(frameIndex);
-  frameIndex += 1;
-  setTimeout(loadNext, 16);
-};
-setTimeout(loadNext, 500);
+    let frameIndex = 1;
+    const loadNext = () => {
+      if (isCancelled || frameIndex >= frameCount) {
+        return;
+      }
+
+      loadFrame(frameIndex);
+      frameIndex += 1;
+      setTimeout(loadNext, 16);
+    };
+
+    setTimeout(loadNext, 500);
 
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
@@ -208,7 +247,7 @@ setTimeout(loadNext, 500);
       isCancelled = true;
       window.removeEventListener("resize", resizeCanvas);
     };
-  }, [frameCount, sequenceBasePath, fileExtension]);
+  }, [fileExtension, frameCount, sequenceBasePath, shouldLoadSequence]);
 
   useEffect(() => {
     if (!sequenceReady) {
@@ -317,8 +356,19 @@ setTimeout(loadNext, 500);
       <div className="sticky top-0 h-screen w-screen overflow-hidden bg-black">
         <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full" />
 
+        {/* PERFORMANCE FIX: Keep a lightweight placeholder in place while the
+            deferred frame sequence has not started or finished loading yet. */}
         {!sequenceReady ? (
-          <div className="absolute inset-0 bg-black" />
+          <div
+            className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_42%),linear-gradient(180deg,#050505_0%,#000_100%)] bg-cover bg-center blur-[1px] scale-[1.02]"
+            style={
+              shouldLoadSequence
+                ? {
+                    backgroundImage: `linear-gradient(180deg, rgba(5,5,5,0.12) 0%, rgba(0,0,0,0.72) 100%), url("${getFrameSrc(0)}")`,
+                  }
+                : undefined
+            }
+          />
         ) : null}
 
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.2)_100%)]" />

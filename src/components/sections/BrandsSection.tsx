@@ -83,18 +83,22 @@ function getBrandMark(brand: string) {
   return specialMarks[brand] ?? brand.slice(0, 2).toUpperCase();
 }
 
-function BrandBadge({ brand }: { brand: string }) {
+function BrandBadge({ brand, duplicate }: { brand: string; duplicate: "first" | "second" }) {
   const logoPath = brandLogoMap[brand];
 
   if (logoPath) {
     return (
       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-primary/22 bg-white/95 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+        {/* PERFORMANCE FIX: Treat marque badges as small images and keep the
+            duplicated marquee loop explicitly lazy so the hidden set defers. */}
         <Image
           src={logoPath}
           alt={`${brand} logo`}
           width={26}
           height={26}
           className="h-6 w-6 object-contain"
+          sizes="(max-width: 768px) 50vw, 200px"
+          loading={duplicate === "second" ? "lazy" : undefined}
         />
       </span>
     );
@@ -114,7 +118,7 @@ function BrandCard({ brand, rowIndex, duplicate }: { brand: string; rowIndex: nu
       className="flex h-[5.5rem] md:h-24 min-w-[10.5rem] md:min-w-[12rem] items-center justify-center rounded-[1.75rem] border border-white/7 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-5 text-center shadow-[0_14px_34px_rgba(0,0,0,0.22)]"
     >
       <div className="flex items-center gap-3">
-        <BrandBadge brand={brand} />
+        <BrandBadge brand={brand} duplicate={duplicate} />
         <span
           className="text-base md:text-lg font-semibold tracking-[0.08em] text-foreground/86"
           style={{ fontFamily: "var(--font-heading)" }}

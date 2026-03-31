@@ -364,12 +364,14 @@ const TestimonialCard = ({
         >
           <div className="absolute opacity-18" style={{ inset: "-1px 0 0" }}>
             <div className="absolute inset-0">
+              {/* PERFORMANCE FIX: Match the testimonial carousel card footprint so
+                  remote background art is fetched at the rendered width only. */}
               <Image
                 className="block h-full w-full object-cover object-center"
                 src={backgroundImage}
                 alt="Background layer"
                 fill
-                sizes="(max-width: 768px) 320px, 384px"
+                sizes="(max-width: 768px) 90vw, 400px"
               />
             </div>
           </div>
@@ -414,6 +416,8 @@ const ProfileImage = ({ src, alt, ...rest }: ImageProps) => {
 
   return (
     <div className="relative flex h-[90px] w-[90px] flex-none overflow-hidden rounded-[1000px] border-[3px] border-solid border-[rgba(208,188,160,0.42)] opacity-85 saturate-[0.22] sepia-[0.35] md:h-[150px] md:w-[150px]">
+      {/* PERFORMANCE FIX: Treat profile portraits as small thumbnails so they
+          decode a much smaller source image on compact and desktop cards. */}
       <Image
         className={cn(
           "absolute inset-0 z-50 rounded-[inherit] object-cover transition duration-300",
@@ -425,6 +429,7 @@ const ProfileImage = ({ src, alt, ...rest }: ImageProps) => {
         height={150}
         loading="lazy"
         decoding="async"
+        sizes="(max-width: 768px) 50vw, 200px"
         blurDataURL={typeof src === "string" ? src : undefined}
         alt={alt || "Profile image"}
         {...rest}

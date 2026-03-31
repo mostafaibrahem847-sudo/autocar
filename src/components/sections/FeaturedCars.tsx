@@ -87,7 +87,7 @@ export default function FeaturedCars() {
     if (!car) return null;
 
     const isActive = activeId === car.id;
-    const imageUrl = encodeURI(car.images[0]);
+    const isDuplicateSet = setKey === "second";
 
     return (
       <TransitionLink
@@ -111,16 +111,18 @@ export default function FeaturedCars() {
           style={{ height: isActive ? "37.5rem" : "35rem" }}
         >
           <div className="absolute inset-0">
+            {/* PERFORMANCE FIX: Use the real marquee card footprint, preload only the
+                first visible cards, and keep the duplicated loop set explicitly lazy. */}
             <NextImage
-  src={car.images[0]}
-  alt={`${car.brand} ${car.model}`}
-  fill
-  className={`object-cover transition-transform duration-700 ${
-    isActive ? "scale-105" : "scale-100 group-hover:scale-105"
-  }`}
-  sizes="(max-width: 768px) 78vw, 24rem"
-  loading="lazy"
-/>
+              src={car.images[0]}
+              alt={`${car.brand} ${car.model}`}
+              fill
+              className={`object-cover transition-transform duration-700 ${
+                isActive ? "scale-105" : "scale-100 group-hover:scale-105"
+              }`}
+              sizes="(max-width: 768px) 90vw, 400px"
+              loading={isDuplicateSet ? "lazy" : undefined}
+            />
             <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/5 to-background/95" />
             <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-background via-background/90 to-transparent" />
           </div>
