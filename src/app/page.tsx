@@ -88,7 +88,7 @@ export default function Home() {
 
       <BrandsSection />
 
-      <div className="hidden md:block">
+      <div>
         <div className="section-divider" />
         <ScrollRevealVideo videoSrc="/video/Car_moving_through_202603271752.mp4" />
         <div className="section-divider" />
