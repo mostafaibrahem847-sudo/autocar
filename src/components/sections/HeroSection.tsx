@@ -151,11 +151,11 @@ export default function HeroSection() {
         className="absolute inset-0 w-full h-[130%] -top-[15%] bg-background"
       />
 
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 pt-28 pb-16">
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 pt-28 pb-16 sm:px-6">
         <div className="grid items-center gap-14 lg:gap-16 xl:gap-20 lg:grid-cols-[minmax(0,1.02fr)_minmax(360px,0.98fr)]">
-          <div className="max-w-3xl text-center lg:text-left lg:pr-8 xl:pr-14">
+          <div className="mx-auto max-w-3xl text-center lg:mx-0 lg:text-left lg:pr-8 xl:pr-14">
             <h1
-              className="mb-8 text-5xl sm:text-6xl md:text-7xl lg:text-[4.8rem] xl:text-[5.2rem] font-black leading-none tracking-tight"
+              className="mb-8 text-[clamp(2.7rem,11vw,4.4rem)] sm:text-6xl md:text-7xl lg:text-[4.8rem] xl:text-[5.2rem] font-black leading-[0.92] tracking-tight"
               style={{ fontFamily: "var(--font-heading)" }}
             >
               <span className="hero-type-line lg:mx-0 mx-auto">
@@ -181,7 +181,7 @@ export default function HeroSection() {
 
             <p
               ref={subRef}
-              className="text-lg md:text-xl text-foreground/68 max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-foreground/68 max-w-[34rem] mx-auto lg:mx-0 mb-10 leading-relaxed"
               style={{ opacity: 0 }}
             >
               Discover supercars, flagship sedans, luxury SUVs, and electric grand tourers in a
@@ -193,17 +193,17 @@ export default function HeroSection() {
               className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10"
               style={{ opacity: 0 }}
             >
-              <Button href="/cars" size="lg">
+              <Button href="/cars" size="lg" className="w-full max-w-[15rem] sm:w-auto sm:max-w-none">
                 Browse Inventory
               </Button>
-              <Button href="/contact" size="lg" variant="outline">
+              <Button href="/contact" size="lg" variant="outline" className="w-full max-w-[15rem] sm:w-auto sm:max-w-none">
                 Book a Viewing
               </Button>
             </div>
 
             <div
               ref={statsRef}
-              className="mb-8 grid grid-cols-1 sm:grid-cols-3 gap-4"
+              className="mb-8 mx-auto grid max-w-md grid-cols-1 gap-4 sm:max-w-none sm:grid-cols-3"
               style={{ opacity: 0 }}
             >
               <div className="rounded-2xl border border-white/8 bg-black/22 px-5 py-4 backdrop-blur-sm">
@@ -222,7 +222,7 @@ export default function HeroSection() {
 
             <div
               ref={chipsRef}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-3"
+              className="mx-auto flex max-w-xl flex-wrap items-center justify-center gap-3 lg:mx-0 lg:justify-start"
               style={{ opacity: 0 }}
             >
               {["Supercars", "Luxury Sedans", "Performance SUVs", "Electric GTs"].map((chip) => (
